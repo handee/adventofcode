@@ -1,26 +1,68 @@
 import fileinput
+import numpy as np
 
-paper=0
-ribbon=0
-for line in fileinput.input(['input.txt']):
-    w,h,l=line.split('x')
-    w=int(w)
-    h=int(h)
-    l=int(l)
+f=open('input.txt','r');
+a=f.read()
+m=len(a)
+print(m)
 #part1
-    currentpaper=2*l*w+2*w*h+2*h*l 
-    side1=w*h
-    side2=h*l
-    side3=l*w
-    sides=[side1,side2,side3]
-    smallest=min(sides)
-    paper=paper+currentpaper+smallest
-#part2
-    volume=w*h*l
-    perimetersides=[w+w+h+h,h+h+l+l,w+w+l+l]
-    smallestperim=min(perimetersides)
-    ribbon=ribbon+volume+smallestperim
+#big 2d array of zeroes to be our big map
+bigmap=np.zeros((2*m,2*m),int) # twice the input length is plenty big
+x=m; #start in the middle
+y=m;
+bigmap[x,y]+=1 #increment starting position
 
-print paper
-print ribbon 
+for d in a:
+    # move the current location
+    if (d=='v'):
+       y-=1
+    if (d=='>'):
+       x+=1
+    if (d=='<'):
+       x-=1
+    if (d=='^'):
+       y+=1
+   # increment cell at current location
+    bigmap[x,y]+=1
 
+houses_visited=np.count_nonzero(bigmap)
+print (houses_visited)
+
+#part2 
+bigmap.fill(0) # zero that array 
+x=m; #start in the middle
+y=m;
+rx=m; # robotsanta also starts in middle
+ry=m;
+bigmap[x,y]+=2 #increment starting position
+santa=1;
+for d in a:
+    if (santa==1) :
+# move the current location of santa
+       if (d=='v'):
+          y-=1
+       if (d=='>'):
+          x+=1
+       if (d=='<'):
+          x-=1
+       if (d=='^'):
+          y+=1
+   # increment cell at current location
+       bigmap[x,y]+=1
+       santa=0
+    else:
+# move the current location of robot santa
+       if (d=='v'):
+          ry-=1
+       if (d=='>'):
+          rx+=1
+       if (d=='<'):
+          rx-=1
+       if (d=='^'):
+          ry+=1
+   # increment cell at current location
+       bigmap[rx,ry]+=1
+       santa=1
+
+houses_visited=np.count_nonzero(bigmap)
+print (houses_visited)
