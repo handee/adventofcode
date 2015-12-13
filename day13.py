@@ -1,7 +1,6 @@
 import fileinput
 import itertools 
 import numpy as np
-from collections import Counter
 
 rough_input=[]
 names={}
