@@ -1,6 +1,6 @@
 import fileinput
 import itertools 
-import numpy as np
+import collections
 eggnog=150
 c=[]
 for line in fileinput.input(['input.txt']):
@@ -33,13 +33,19 @@ while i > 0 :
 smallestnumberofcontainers=len(c)-smallestnumberofcontainers
 print "so we need between {} and {} containers...".format(smallestnumberofcontainers,largestnumberofcontainers)
 
+
 total_appropriate_container_combos=0
-for i in range(smallestnumberofcontainers,largestnumberofcontainers):
+
+#add a counter for part 2
+conts=collections.Counter()
+for i in range(smallestnumberofcontainers,largestnumberofcontainers+1):
+    conts[i]=0
     y=itertools.combinations(c,i)
     for j in list(y):
         if sum(j)==eggnog:
-            print j
-            print sum(j)
+	    conts[i]+=1
             total_appropriate_container_combos+=1
 
-print "so we have {}".format(total_appropriate_container_combos)
+print "so we have {} different solutions".format(total_appropriate_container_combos)
+print "here are the number of combinations for each number of containers.."
+print conts
